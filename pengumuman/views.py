@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-# Create your views here.
-def hello(request):
-    return render(request, 'hello.html', {'greeting': 'Hello, Django!'})
+from .models import Pengumuman
+
+def pengumuman_list(request):
+    pengumumans = Pengumuman.objects.all()
+    return render(request, 'pengumuman_list.html', {'pengumumans': pengumumans})

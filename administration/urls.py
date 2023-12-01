@@ -5,5 +5,4 @@ app_name = 'administration'
 
 urlpatterns = [
     path('update-profile/', update_profile, name='update_profile'),
-
 ]
