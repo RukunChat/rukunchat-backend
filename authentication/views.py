@@ -10,7 +10,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-def login(request):
+def user_login(request):
     if request.method == 'GET':
         return render(request, 'login.html') 
     
@@ -22,9 +22,11 @@ def login(request):
 
         pengguna = Pengguna.objects.get(user=user)
         if pengguna is not None:
+            login(request, user)
+            
             return render(request, '200.html')
 
-def signup(request):
+def user_signup(request):
     form = SignupForm()
     
     if request.method == 'GET':
