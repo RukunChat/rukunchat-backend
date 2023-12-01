@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 from .models import Pengguna
 from .forms import SignupForm
@@ -9,8 +10,13 @@ from .forms import SignupForm
 def index(request):
     return render(request, 'index.html')
 
+@login_required(login_url='/auth/login/')
+def user_logout(request):
+    logout(request)
+    request.session.flush()
+    return redirect('/auth/login/')
 
-def login_view(request):
+def user_login(request):
     if request.method == 'GET':
         return render(request, 'login.html') 
     
@@ -23,9 +29,11 @@ def login_view(request):
         pengguna = Pengguna.objects.get(user=user)
         if pengguna is not None:
             login(request, user)
+
+            # TODO: redirect to landing page
             return render(request, '200.html')
 
-def signup(request):
+def user_signup(request):
     form = SignupForm()
     
     if request.method == 'GET':
@@ -45,7 +53,7 @@ def signup(request):
             nik = request.POST['nik']
             foto = request.POST['foto']
 
-            Pengguna.objects.create(
+            pengguna = Pengguna.objects.create(
                 user=user,
                 nama_lengkap=nama_lengkap,
                 tanggal_lahir=tgl_lahir,
@@ -54,6 +62,8 @@ def signup(request):
                 foto=foto,
                 active=False
                 )
+            
+            pengguna.save()
 
             return render(request, 'index.html', {})
 
