@@ -1,0 +1,92 @@
+<!-- pengumuman_list.html -->
+{% extends 'base.html' %}
+
+{% block title %}Pengumuman List{% endblock %}
+
+{% block additional_styles %}
+    <style>
+        /* Add your additional styles for the landing page here */
+        .card {
+    border: 1px solid #ddd; /* Add a border for better visibility */
+    border-radius: 10px; /* Optional: Add border-radius for a rounded look */
+    }
+
+    .card-title {
+        color: #333; /* Set title color */
+    }
+
+    .card-subtitle {
+        color: #666; /* Set subtitle color */
+    }
+
+    .creator-photo {
+        width: 40px; /* Set the width of the creator's photo */
+        height: 40px; /* Set the height of the creator's photo */
+        object-fit: cover; /* Maintain aspect ratio for the photo */
+        border-radius: 50%; /* Make the photo circular */
+    }
+
+    .card-text {
+        color: #555; /* Set the text color */
+    }
+
+    .read-more {
+        color: #3498db; /* Set the color for the "Read full" link */
+        text-decoration: none;
+    }
+
+    .read-more:hover {
+        text-decoration: underline; /* Add underline on hover */
+    }
+
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Pengumuman Warga</h1>
+
+    <!-- Button to trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPengumumanModal">
+        Add New Pengumuman
+    </button>
+
+    {% for pengumuman in pengumumans %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ pengumuman.title }}</h5>
+                <p class="card-subtitle mb-3 text-muted">
+                    <span class="d-flex align-items-center">
+                        <img src="{{ pengumuman.user.foto.url }}" alt="{{ pengumuman.user.nama_lengkap }}'s Photo" class="card-img creator-photo">
+                        <span class="ml-2">
+                            Creator: {{ pengumuman.user.nama_lengkap }} <br>
+                            Date Created: {{ pengumuman.date_created|date:"M. j, Y, g:i a" }}
+                        </span>
+                    </span>
+                </p>
+                <p class="card-text">{{ pengumuman.text|truncatewords:150 }}{% if pengumuman.text|length > 150 %}...{% endif %}</p>
+                <a href="{% url 'pengumuman:pengumuman_detail' id=pengumuman.id %}" class="read-more">Read full</a>
+            </div>
+        </div>
+    {% endfor %}
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="createPengumumanModal" tabindex="-1" role="dialog" aria-labelledby="createPengumumanModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPengumumanModalLabel">Create New Pengumuman</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'pengumuman:pengumuman_list' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

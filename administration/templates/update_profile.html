@@ -1,0 +1,18 @@
+<!-- templates/update_profile.html -->
+
+{% block content %}
+  <h2>Update Profile</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ pengguna_form.as_p }}
+
+    <input type="checkbox" name="is_pengurus"> Sign up as Pengurus<br>
+
+    {% if is_pengurus %}
+      {{ anggota_form.as_p }}
+      {{ pengurus_form.as_p }}
+    {% endif %}
+
+    <button type="submit">Update Profile</button>
+  </form>
+{% endblock %}
