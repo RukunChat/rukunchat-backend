@@ -1,5 +1,6 @@
 from django.db import models
-
+from datetime import timedelta
+from django.utils import timezone
 from authentication.models import Pengguna
 
 # Create your models here.
