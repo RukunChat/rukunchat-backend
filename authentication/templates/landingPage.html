@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Welcome to RukunChat{% endblock %}
+
+{% block additional_styles %}
+    <style>
+        /* Add your additional styles for the landing page here */
+        .welcome-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .welcome-message {
+            font-size: 24px;
+            color: #007BFF; /* Bootstrap primary color */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container welcome-container">
+        <h1>Welcome to RukunChat</h1>
+        <p class="welcome-message">Your media for community communication.</p>
+    </div>
+{% endblock %}

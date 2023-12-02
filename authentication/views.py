@@ -26,12 +26,11 @@ def user_login(request):
 
         user = authenticate(request, username=username, password=password)
 
-        pengguna = Pengguna.objects.get(user=user)
-        if pengguna is not None:
+        if user is not None:
             login(request, user)
 
             # TODO: redirect to landing page
-            return render(request, '200.html')
+            return render(request, 'landingPage.html')
 
 def user_signup(request):
     form = SignupForm()

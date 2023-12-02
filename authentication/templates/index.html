@@ -1,28 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RukunChat</title>
+{% extends 'base.html' %}
+
+{% block title %}RukunChat{% endblock %}
+
+{% block additional_styles %}
     <style>
         h1 {
-          text-align: center;
-          font-size: 50px;
+            text-align: center;
+            font-size: 50px;
         }
         h2 {
-          text-align: center;
-          font-size: 30px;
+            text-align: center;
+            font-size: 30px;
         }
         .button {
-          display: inline-block;
-          margin-left: auto;
-          margin-right: auto;
-          width: 100px;
-          height: 50px;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100px;
+            height: 50px;
         }
-      </style>
-</head>
-<body>
+    </style>
+{% endblock %}
+
+{% block content %}
     <h1>RukunChat</h1>
     <h2>Media Komunikasi RT/RW</h2>
     <div style="text-align: center;">
@@ -33,5 +33,4 @@
             <button class="button">Sign Up</button>
         </a>
     </div>
-</body>
-</html>
+{% endblock %}
