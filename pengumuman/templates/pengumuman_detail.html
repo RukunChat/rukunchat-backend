@@ -6,17 +6,24 @@
 {% block additional_styles %}
     <style>
         /* Add your additional styles for the landing page here */
-        .card {
-    border: 1px solid #ddd; /* Add a border for better visibility */
-    border-radius: 10px; /* Optional: Add border-radius for a rounded look */
+    .card {
+        border: 1px solid #ddd; /* Add a border for better visibility */
+        border-radius: 10px; /* Optional: Add border-radius for a rounded look */
     }
 
     .card-title {
-        color: #333; /* Set title color */
+        color: #333;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .topic {
+        font-size: 14px; /* Adjust the font size as needed */
+        color: #888; /* Set the desired color for the topic */
     }
 
     .card-subtitle {
-        color: #666; /* Set subtitle color */
+        color: #666;
     }
 
     .creator-photo {
@@ -38,13 +45,27 @@
     .read-more:hover {
         text-decoration: underline; /* Add underline on hover */
     }
+    .delete-edit-buttons {
+            display: flex;
+            justify-content: flex-end;
+    }
+
+    .delete-edit-buttons a {
+            margin-left: 10px;
+    }
+
+    </style>
 
 {% endblock %}
 
 {% block content %}
+
     <div class="card mb-4">
         <div class="card-body">
-            <h1 class="card-title">{{ pengumuman.title }}</h1>
+            <h5 class="card-title">
+                <span>{{ pengumuman.title }}</span>
+                <span class="topic">{{ pengumuman.topic }}</span>
+            </h5>
             <p class="card-subtitle mb-3 text-muted">
                 <span class="d-flex align-items-center">
                     <img src="{{ pengumuman.user.foto.url }}" alt="{{ pengumuman.user.nama_lengkap }}'s Photo" class="card-img creator-photo">
@@ -55,6 +76,13 @@
                 </span>
             </p>
             <p class="card-text">{{ pengumuman.text }}</p>
+
+            {% if pengumuman.user.user == request.user %}
+                <div class="delete-edit-buttons">
+                    <a href="#" class="btn btn-danger">Delete</a>
+                    <a href="#" class="btn btn-primary">Edit</a>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
