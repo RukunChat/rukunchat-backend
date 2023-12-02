@@ -1,3 +1,5 @@
+from django.utils import timezone
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
@@ -8,7 +10,17 @@ from .forms import LayananForm
 # Create your views here.
 @login_required(login_url='/auth/login/')
 def show_all_layanan(request):
+    query = request.GET.get('q')
+    active = request.GET.get('active')
+    print('afmwioepf')
     layanan = Layanan.objects.all()
+
+    if query:
+        layanan = layanan.filter(Q(nama__icontains=query))
+    if active:
+        print('active')
+        today = timezone.now().date()
+        layanan = layanan.filter(Q(end_date__gte=today))
 
     if request.method == 'GET':
         context = {
