@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
-
 from authentication.models import Pengguna
 
 from .models import Pengumuman
@@ -12,12 +11,10 @@ def pengumuman_list(request):
     pengumumans = Pengumuman.objects.all().order_by(order_by)  
     topic = request.GET.get('topic')  
     if query:
-        pengumumans = pengumumans.filter(
-            Q(title__icontains=query)
-        )
-        
+        pengumumans = pengumumans.filter(Q(title__icontains=query))
+
     if topic:
-        pengumumans = pengumumans.filter(topic=topic)
+        pengumumans = pengumumans.filter(Q(topic=topic))
 
     form = PengumumanForm()
 
@@ -29,7 +26,7 @@ def pengumuman_list(request):
             new_pengumuman.save()
             return redirect('pengumuman:pengumuman_list')
 
-    return render(request, 'pengumuman_list.html', {'pengumumans': pengumumans, 'form': form})
+    return render(request, 'pengumuman_list.html', {'pengumumans': pengumumans, 'form': form, 'topic': topic})
 
 def pengumuman_detail(request, id):
     pengumuman = get_object_or_404(Pengumuman, id=id)

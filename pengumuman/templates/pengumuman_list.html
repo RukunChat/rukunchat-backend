@@ -1,14 +1,18 @@
 <!-- pengumuman_list.html -->
 {% extends 'base.html' %}
 
+
+
 {% block title %}Pengumuman List{% endblock %}
 
 {% block additional_styles %}
     <style>
         /* Add your additional styles for the landing page here */
     .card {
-        border: 1px solid #ddd; /* Add a border for better visibility */
-        border-radius: 10px; /* Optional: Add border-radius for a rounded look */
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
 
     .card-title {
@@ -45,6 +49,7 @@
     .read-more:hover {
         text-decoration: underline; /* Add underline on hover */
     }
+
     .delete-edit-buttons {
             display: flex;
             justify-content: flex-end;
@@ -65,13 +70,6 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-top: 20px;
-    }
-
-    .card {
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
     }
 
     .btn-primary {
@@ -116,7 +114,6 @@
 
 {% block content %}
 
-    <div class="container">
         <h1 class="mb-4">Pengumuman Warga</h1>
 
         {% if request.user.is_authenticated %}
@@ -130,9 +127,14 @@
 
         <div class="d-flex mt-3 mb-3">
             <form method="get" action="{% url 'pengumuman:pengumuman_list' %}" class="mr-2 flex-grow-1">
-                <input type="text" name="q" placeholder="Search..." class="search-bar">
+                <div class="input-group">
+                    <input type="text" name="q" placeholder="Search..." class="form-control search-bar" value="{{ request.GET.q }}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-secondary">Search</button>
+                    </div>
+                    <input type="hidden" name="topic" value="{{ request.GET.topic }}">
+                </div>
             </form>
-            <button type="submit" class="btn btn-secondary">Search</button>
         </div>
 
         <!-- Filter buttons -->
@@ -141,11 +143,11 @@
                 {% if topic %}Filter: {{ topic }}{% else %}Filter by Topic{% endif %}
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item {% if not topic %}active{% endif %}" href="?">All</a>
-                <a class="dropdown-item {% if topic == 'Kegiatan' %}active{% endif %}" href="?topic=Kegiatan">Kegiatan</a>
-                <a class="dropdown-item {% if topic == 'Silahturahmi' %}active{% endif %}" href="?topic=Silahturahmi">Silahturahmi</a>
-                <a class="dropdown-item {% if topic == 'Kebaikan' %}active{% endif %}" href="?topic=Kebaikan">Kebaikan</a>
-                <a class="dropdown-item {% if topic == 'Lainnya' %}active{% endif %}" href="?topic=Lainnya">Lainnya</a>
+                <a class="dropdown-item {% if not topic %}active{% endif %}" href="?q={{ request.GET.q }}">All</a>
+                <a class="dropdown-item {% if topic == 'Kegiatan' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Kegiatan">Kegiatan</a>
+                <a class="dropdown-item {% if topic == 'Silahturahmi' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Silahturahmi">Silahturahmi</a>
+                <a class="dropdown-item {% if topic == 'Kebaikan' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Kebaikan">Kebaikan</a>
+                <a class="dropdown-item {% if topic == 'Lainnya' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Lainnya">Lainnya</a>
             </div>
         </div>
 
@@ -206,5 +208,4 @@
                 </div>
             </div>
         </div>
-    </div>
 {% endblock %}
