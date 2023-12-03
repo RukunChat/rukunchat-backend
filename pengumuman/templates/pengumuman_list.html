@@ -1,8 +1,6 @@
 <!-- pengumuman_list.html -->
 {% extends 'base.html' %}
 
-
-
 {% block title %}Pengumuman List{% endblock %}
 
 {% block additional_styles %}
@@ -107,6 +105,44 @@
         padding: 8px;
         border: 1px solid #ced4da;
         border-radius: 10px;
+    }
+    /* Modal Styles */
+    #createPengumumanModal {
+        overflow-y: auto; /* Enable vertical scroll if content exceeds the viewport height */
+    }
+
+    .modal-content {
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-header {
+        background-color: #6cb2eb; /* Modern pastel background color */
+        border-bottom: none; /* Remove border at the bottom of the header */
+        border-radius: 12px 12px 0 0; /* Rounded corners for the top */
+    }
+
+    .modal-title {
+        color: #fff; /* White text color */
+        font-size: 1.5rem; /* Larger font size */
+        margin-bottom: 0; /* Remove default margin */
+    }
+
+    .modal-body {
+        padding: 30px;
+    }
+
+    /* Close button styles */
+    .close {
+        color: #fff; /* White close button text color */
+        font-size: 1.5rem; /* Larger font size */
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+        .modal-dialog {
+            max-width: 95%; /* Slightly larger on smaller screens */
+        }
     }
     </style>
 

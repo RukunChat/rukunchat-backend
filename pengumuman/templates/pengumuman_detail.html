@@ -5,7 +5,6 @@
 
 {% block additional_styles %}
     <style>
-        /* Add your additional styles for the landing page here */
     .card {
         border: 1px solid #ddd;
         border-radius: 10px;
@@ -15,7 +14,7 @@
 
     body {
         background: #e9ecef;
-        margin-bottom: 20px; /* Add some space at the bottom of the page */
+        margin-bottom: 20px;
     }
 
     .card-title {
@@ -25,8 +24,8 @@
     }
 
     .topic {
-        font-size: 14px; /* Adjust the font size as needed */
-        color: #888; /* Set the desired color for the topic */
+        font-size: 14px;
+        color: #888;
     }
 
     .card-subtitle {
@@ -34,24 +33,16 @@
     }
 
     .creator-photo {
-        width: 40px; /* Set the width of the creator's photo */
-        height: 40px; /* Set the height of the creator's photo */
-        object-fit: cover; /* Maintain aspect ratio for the photo */
-        border-radius: 50%; /* Make the photo circular */
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+        border-radius: 50%;
     }
 
     .card-text {
-        color: #555; /* Set the text color */
+        color: #555;
     }
 
-    .read-more {
-        color: #3498db; /* Set the color for the "Read full" link */
-        text-decoration: none;
-    }
-
-    .read-more:hover {
-        text-decoration: underline; /* Add underline on hover */
-    }
     .delete-edit-buttons {
             display: flex;
             justify-content: flex-end;
@@ -104,6 +95,8 @@
 {% endblock %}
 
 {% block content %}
+
+    <h1 class="mb-4">Pengumuman Warga</h1>
 
     <div class="card mb-4">
         <div class="card-body">
