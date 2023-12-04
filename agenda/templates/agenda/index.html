@@ -1,3 +1,6 @@
+<button type="button">
+    <a href="{% url 'agenda:add_kegiatan' %}"> Tambahkan kegiatan </a>
+</button>
 {% if listKegiatan %}
     <ul>
     {% for kegiatan in listKegiatan %}

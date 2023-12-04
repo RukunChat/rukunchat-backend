@@ -1,0 +1,8 @@
+{% if kegiatan %}
+            <p>{{ kegiatan.namaKegiatan }}</p>
+            <p>{{ kegiatan.deskripsiKegiatan|truncatechars:50 }}</p>
+            <p>{{ kegiatan.waktuKegiatan }}</p>
+    <br>
+{% else %}
+    <p>Tidak ada agenda.</p>
+{% endif %}
