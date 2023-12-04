@@ -1,0 +1,55 @@
+body{
+    scroll-behavior: smooth;
+    box-sizing: border-box;
+}
+.login {
+    width: 30%;
+    margin: 0 auto;
+    background-color: #245383;
+    padding: 2rem;
+}
+
+.heading {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+}
+
+.main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}.btn-div{
+    width: 20vw;
+}
+
+@media screen and (max-width:500px) {
+    .login {
+        width: 100%;
+        padding: 2rem 1rem;
+    }
+    .btn-div {
+        width: 70vw;
+    }
+}
+
+@media screen and (min-device-width: 469px) and (max-device-width: 767px) {
+    .login {
+        width: 80%;
+        padding: 2rem;
+    }
+    .btn-div {
+        width:50vw;
+    }
+}
+
+@media screen and (min-device-width: 768px) and (max-device-width: 1069px) {
+    .login {
+        width: 80%;
+        padding: 2rem;
+    }
+    .btn-div {
+        width:30vw;
+    }
+}

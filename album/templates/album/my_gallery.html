@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+        <link rel="stylesheet" href="{%  static  'css/style.css'  %}">
+    <title>Welcome to Your Gallery</title>
+    <style>
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            margin-top: 2px;
+        }
+
+        .image-thumbnail {
+            height: 200px;
+            object-fit: cover;
+        }
+        body{
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navar Start -->
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/">Your Gallery</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        {% if request.session.username %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'mygallery' %}">My Gallery</a>
+                        </li>
+                        {% endif%}
+                    </ul>
+                    {% if request.session.username %}
+                    <div>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-success">Logout</a>
+                    </div>
+
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+    <!-- navbar end -->
+    <main class="p-3">
+        {% if not gallery %}
+        <div class="mt-5">
+            <h4 class="text-center pt-5">
+                You have no Photos, Please Add your Pictures
+            </h4>
+        </div>
+        {% endif%}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header">Albums</div>
+                        <ul class="list-group list-group-flush ">
+                            <li class="list-group-item active">
+                                <a href="{% url 'mygallery' %}" class="text-decoration-none text-light " id="allalbum">All</a>
+                            </li>
+                            {% for cat in album %} {% if cat.cat%}
+                            <li class="list-group-item">
+                                <a href="/my-gallery?album={{cat.cat}}"  class="text-decoration-none album">
+                                    {{cat.cat}}</a>
+                            </li>
+                            {% endif%} {% endfor %}
+                            <a href="{% url 'makegallery' %}" class="btn btn-dark m-1 btn-sm">Add Photo</a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        {% for data in gallery%}
+                        <div class="col-md-4 my-2">
+                            <div class="card">
+                                <img src="{{data.image.url}}" class="image-thumbnail img-fluid" alt="..." />
+                                <div class="card-body align-items-center justify-content-between d-flex">
+                                    <small>Album : {{data.album}}</small>
+                                    <small><a class="btn btn-danger btn-sm"
+                                            href="/delete-image?id={{data.id}}">Delete</a></small>
+                                </div>
+                                <a href="/view-photo?id={{data.id}}" class="btn btn-outline-dark btn-sm m-1">View</a>
+                            </div>
+                        </div>
+                        {% endfor%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script>
+        
+        const album=document.querySelectorAll('.album');
+        const allalbum=document.getElementById('allalbum')
+        onload=function getParameter(){
+            let test=window.location.search
+            s=test.split('=')
+            album.forEach(x=>{
+                if(x.innerText==s[1]){
+                    x.parentElement.classList.add('active')
+                    x.classList.add('text-light')
+                    allalbum.classList.remove('text-light')
+                    allalbum.parentElement.classList.remove('active')
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

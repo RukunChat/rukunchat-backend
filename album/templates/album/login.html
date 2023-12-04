@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+    <link rel='stylesheet' href="{% static 'css/style.css' %}">
+    <style>
+        .pass-div {
+            position: relative;
+        }
+        
+        #show-pass {
+            position: absolute;
+            bottom: 5px;
+            right: 20px;
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+    <title>Login</title>
+</head>
+
+<body>
+
+
+    <main class="p-3 p-sm-5">
+        <div class="login rounded text-light">
+            <h2 class="heading mb-3 d-flex align-itmes-center justify-content-between"><a href="{% url 'home' %}" class='btn btn-dark  d-flex align-items-center'><i class='bx bx-arrow-back me-2'></i>Back</a> Login</h2>
+            {% if errormsg %}
+            <div class="alert alert-danger mb-3 myalert">{{errormsg}}</div>
+            {% endif %}
+            <form method="post" action="{% url 'loginvalidation' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="musername" class="form-label">UserName</label>
+                    <input type="text" class="form-control" id="musername" name="username">
+
+                </div>
+
+                <div class="mb-3 pass-div">
+                    <label for="pass" class="form-label">Password</label><span id="show-pass"><i class='bx bx-show' id="eye" onclick="showpass()"></i></span>
+                    <input type="password" class="form-control" id="pass" name="password">
+                </div>
+
+                <button type="submit" class="btn btn-warning ">LOGIN</button>
+                <span class="ms-4">
+                    New User ?
+                    <a href="{% url 'signup' %}" class="btn btn-secondary btn-sm ms-1">Register</a>
+                </span>
+            </form>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>
