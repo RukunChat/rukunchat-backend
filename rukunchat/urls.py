@@ -26,6 +26,7 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('layanan/', include('layanan.urls')),
     path('administration/', include('administration.urls')),
+    path('notula/', include('notula.urls')),
 ]
 
 if settings.DEBUG:
