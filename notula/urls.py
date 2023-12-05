@@ -5,5 +5,5 @@ app_name = 'notula'
 
 urlpatterns = [
    path("add/", views.add_notula, name="add_notula"),
-   path('<int:id>/', notula_detail, name='notula_detail'),
+   path('<int:id_notula>/', notula_detail, name='notula_detail'),
 ]
