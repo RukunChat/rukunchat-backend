@@ -3,11 +3,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h2>Profile Information</h2>
-            <img src="{{ pengguna.foto.url }}" alt="{{ pengguna.nama_lengkap }}" class="img-fluid mb-3">
+            {% if pengguna.foto %}
+            <img src="{{ pengguna.foto.url }}" alt="{{ pengguna.nama_lengkap }}'s Photo" class="img-fluid mb-3">
+            {% else %}
+                <img src="{% static 'images/profpic.jpg' %}" alt="Default User Photo" class="img-fluid mb-3">
+            {% endif %}
             <p><strong>Nama Lengkap:</strong> {{ pengguna.nama_lengkap }}</p>
             <p><strong>Tanggal Lahir:</strong> {{ pengguna.tanggal_lahir }}</p>
             <p><strong>Alamat:</strong> {{ pengguna.alamat }}</p>

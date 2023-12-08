@@ -8,7 +8,7 @@ from .forms import SignupForm
 
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'landingPage.html')
 
 @login_required(login_url='/auth/login/')
 def user_logout(request):
@@ -36,21 +36,19 @@ def user_signup(request):
     form = SignupForm()
     
     if request.method == 'GET':
-        context = {
-            'form': form
-        }
+        context = {'form': form}
         return render(request, 'signup.html', context)
     
     elif request.method == 'POST':
-        user = UserCreationForm(request.POST)
+        user_form = UserCreationForm(request.POST)
+        form = SignupForm(request.POST, request.FILES)  # Add request.FILES for file uploads
 
-        if user.is_valid():
-            user = user.save()
-            nama_lengkap = request.POST['nama_lengkap']
-            tgl_lahir = request.POST['tgl_lahir']
-            alamat = request.POST['alamat']
-            nik = request.POST['nik']
-            foto = request.POST['foto']
+        if user_form.is_valid() and form.is_valid():
+            user = user_form.save()
+            nama_lengkap = form.cleaned_data['nama_lengkap']
+            tgl_lahir = form.cleaned_data['tgl_lahir']
+            alamat = form.cleaned_data['alamat']
+            nik = form.cleaned_data['nik'] if 'nik' in form.cleaned_data else None
 
             pengguna = Pengguna.objects.create(
                 user=user,
@@ -58,13 +56,16 @@ def user_signup(request):
                 tanggal_lahir=tgl_lahir,
                 alamat=alamat,
                 nik=nik,
-                foto=foto,
                 active=False
-                )
+            )
             
             pengguna.save()
 
-            return render(request, 'index.html', {})
+            return render(request, 'login.html')
+
+    # If the form is not valid, return the form and display errors
+    context = {'form': form}
+    return render(request, 'signup.html', context)
 
 
 

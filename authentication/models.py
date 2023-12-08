@@ -7,6 +7,6 @@ class Pengguna(models.Model):
     nama_lengkap = models.CharField(max_length=255)
     tanggal_lahir = models.DateField()
     alamat = models.CharField(max_length=255)
-    nik = models.BigIntegerField()
-    foto = models.ImageField(upload_to='media/users')
+    nik = models.BigIntegerField(null=True, blank=True)
+    foto = models.ImageField(upload_to='media/users', null=True, blank=True)  # Allow null values
     active = models.BooleanField()
