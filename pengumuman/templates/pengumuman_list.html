@@ -68,6 +68,9 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-top: 20px;
+        max-width: 1600px; /* Set your desired maximum width */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .btn-primary {
@@ -149,6 +152,7 @@
 {% endblock %}
 
 {% block content %}
+{% load static %}
 
         <h1 class="mb-4">Pengumuman Warga</h1>
 
@@ -203,7 +207,11 @@
                 </h5>
                 <p class="card-subtitle mb-3 text-muted">
                     <span class="d-flex align-items-center">
+                        {% if pengumuman.user.foto %}
                         <img src="{{ pengumuman.user.foto.url }}" alt="{{ pengumuman.user.nama_lengkap }}'s Photo" class="card-img creator-photo">
+                        {% else %}
+                            <img src="{% static 'images/profpic.jpg' %}" alt="Default User Photo" class="card-img creator-photo">
+                        {% endif %}
                         <span class="ml-2">
                             Creator: {{ pengumuman.user.nama_lengkap }} <br>
                             Date Created: {{ pengumuman.date_created|date:"M. j, Y, g:i a" }}
