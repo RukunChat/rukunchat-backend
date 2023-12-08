@@ -26,7 +26,16 @@ def update_profile(request):
 @login_required(login_url='/auth/login/')
 def view_profile(request):
     pengguna = Pengguna.objects.get(user=request.user)
-    return render(request, 'view_profile.html', {'pengguna': pengguna})
 
-# #            <a href="{% url 'register_anggota' %}" class="btn btn-success">Register as Anggota RT RW</a>
-#             <a href="{% url 'register_pengurus' %}" class="btn btn-warning">Register as Pengurus RT/RW</a>
+    try:
+        anggota = Anggota.objects.get(pengguna=pengguna)
+    except Anggota.DoesNotExist:
+        anggota = None
+
+    try:
+        pengurus = Pengurus.objects.get(anggota = anggota)
+    except Pengurus.DoesNotExist:
+        pengurus = None
+
+        
+    return render(request, 'view_profile.html', {'pengguna': pengguna, 'anggota': anggota, 'pengurus':pengurus})

@@ -156,14 +156,10 @@
 
         <h1 class="mb-4">Pengumuman Warga</h1>
 
-        {% if request.user.is_authenticated %}
-            <!-- Button to trigger modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPengumumanModal">
-                Add New Pengumuman
-            </button>
-        {% else %}
-            <p class="mt-3 mb-3">You need to be authenticated to add a new pengumuman. <a href="{% url 'authentication:login' %}">Login</a> or <a href="{% url 'authentication:signup' %}">Sign up</a>.</p>
-        {% endif %}
+        <!-- Button to trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPengumumanModal">
+            Add New Pengumuman
+        </button>
 
         <div class="d-flex mt-3 mb-3">
             <form method="get" action="{% url 'pengumuman:pengumuman_list' %}" class="mr-2 flex-grow-1">
@@ -173,6 +169,7 @@
                         <button type="submit" class="btn btn-secondary">Search</button>
                     </div>
                     <input type="hidden" name="topic" value="{{ request.GET.topic }}">
+                    <input type="hidden" name="rt_filter" value="{{ request.GET.rt_filter }}">
                 </div>
             </form>
         </div>
@@ -183,11 +180,20 @@
                 {% if topic %}Filter: {{ topic }}{% else %}Filter by Topic{% endif %}
             </button>
             <div class="dropdown-menu">
-                <a class="dropdown-item {% if not topic %}active{% endif %}" href="?q={{ request.GET.q }}">All</a>
-                <a class="dropdown-item {% if topic == 'Kegiatan' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Kegiatan">Kegiatan</a>
-                <a class="dropdown-item {% if topic == 'Silahturahmi' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Silahturahmi">Silahturahmi</a>
-                <a class="dropdown-item {% if topic == 'Kebaikan' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Kebaikan">Kebaikan</a>
-                <a class="dropdown-item {% if topic == 'Lainnya' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Lainnya">Lainnya</a>
+                <a class="dropdown-item {% if not topic %}active{% endif %}" href="?q={{ request.GET.q }}&rt_filter={{ anggota.RT.nomor }}">All</a>
+                <a class="dropdown-item {% if topic == 'Kegiatan' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Kegiatan&rt_filter={{ request.GET.rt_filter }}">Kegiatan</a>
+                <a class="dropdown-item {% if topic == 'Silahturahmi' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Silahturahmi&rt_filter={{ request.GET.rt_filter }}">Silahturahmi</a>
+                <a class="dropdown-item {% if topic == 'Kebaikan' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Kebaikan&rt_filter={{ request.GET.rt_filter }}">Kebaikan</a>
+                <a class="dropdown-item {% if topic == 'Lainnya' %}active{% endif %}" href="?q={{ request.GET.q }}&topic=Lainnya&rt_filter={{ request.GET.rt_filter }}">Lainnya</a>
+            </div>
+        </div>
+        <div class="btn-group mb-3">
+            <button type="button" class="btn btn-secondary dropdown-toggle {% if rt_filter %}active{% endif %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if rt_filter %}Filter: RT {{rt_filter}}{% else %}Filter by All RT{% endif %}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item {% if not rt_filter %}active{% endif %}" href="?q={{ request.GET.q }}&topic={{ request.GET.topic }}">All RTs</a>
+                <a class="dropdown-item {% if rt_filter == anggota.RT.nomor %}active{% endif %}" href="?q={{ request.GET.q }}&topic={{ request.GET.topic }}&rt_filter={{ anggota.RT.nomor }}">Your RT ({{ anggota.RT.nomor }})</a>
             </div>
         </div>
 
@@ -203,29 +209,47 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <span>{{ pengumuman.title }}</span>
-                    <span class="topic">{{ pengumuman.topic }}</span>
+                    <span class="topic">
+                        {{ pengumuman.topic }}
+                        <div class="d-flex align-items-center mt-2">
+                            <span class="mr-2">
+                                RT {{ pengumuman.anggota.RT.nomor }}
+                            </span>
+                            <span>
+                                / RW {{ pengumuman.anggota.RT.RW.nomor }}
+                            </span>
+                        </div>
+                    </span>
                 </h5>
                 <p class="card-subtitle mb-3 text-muted">
                     <span class="d-flex align-items-center">
-                        {% if pengumuman.user.foto %}
-                        <img src="{{ pengumuman.user.foto.url }}" alt="{{ pengumuman.user.nama_lengkap }}'s Photo" class="card-img creator-photo">
+                        {% if pengumuman.anggota.pengguna.foto %}
+                        <img src="{{ pengumuman.anggota.pengguna.foto.url }}" alt="{{ pengumuman.anggota.pengguna.nama_lengkap }}'s Photo" class="card-img creator-photo">
                         {% else %}
                             <img src="{% static 'images/profpic.jpg' %}" alt="Default User Photo" class="card-img creator-photo">
                         {% endif %}
                         <span class="ml-2">
-                            Creator: {{ pengumuman.user.nama_lengkap }} <br>
+                            Creator: {{ pengumuman.anggota.pengguna.nama_lengkap }} <br>
                             Date Created: {{ pengumuman.date_created|date:"M. j, Y, g:i a" }}
                         </span>
                     </span>
                 </p>
-                <p class="card-text">{{ pengumuman.text|truncatewords:150 }}{% if pengumuman.text|length > 150 %}...{% endif %}</p>
+                <p class="card-text">{{ pengumuman.text|truncatechars:150 }}{% if pengumuman.text|length > 150 %}...{% endif %}</p>
+
                 <a href="{% url 'pengumuman:pengumuman_detail' id=pengumuman.id %}" class="read-more">Read full</a>
 
-                {% if pengumuman.user.user == request.user %}
+                {% if pengurus %}
                     <div class="delete-edit-buttons">
                         <a href="#" class="btn btn-danger">Delete</a>
                         <a href="#" class="btn btn-primary">Edit</a>
                     </div>
+                {% else %}
+                    {% if pengumuman.anggota.pengguna.user == request.user %}
+                        <div class="delete-edit-buttons">
+                            <a href="#" class="btn btn-danger">Delete</a>
+                            <a href="#" class="btn btn-primary">Edit</a>
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
