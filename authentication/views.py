@@ -1,23 +1,27 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 
 from .models import Pengguna
 from .forms import SignupForm
-
 from administration.models import Pengurus, Anggota
 
 
 def index(request):
     return render(request, 'landingPage.html')
 
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def user_logout(request):
     logout(request)
     request.session.flush()
     return redirect('/auth/login/')
 
+
+@csrf_exempt
 def user_login(request):
     if request.method == 'GET':
         return render(request, 'login.html') 
@@ -42,6 +46,8 @@ def user_login(request):
             }
             return render(request, 'login.html', context)
 
+
+@csrf_exempt
 def user_signup(request):
     form = SignupForm()
     
