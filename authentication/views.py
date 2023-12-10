@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Pengguna
 from .forms import SignupForm
 
+from administration.models import Pengurus, Anggota
+
 
 def index(request):
     return render(request, 'landingPage.html')
@@ -31,6 +33,12 @@ def user_login(request):
 
             # TODO: redirect to landing page
             return render(request, 'landingPage.html')
+        else:
+            message = 'Invalid credentials. Please try again.'
+            context = {
+                'message': message
+            }
+            return render(request, 'login.html', context)
 
 def user_signup(request):
     form = SignupForm()
@@ -66,6 +74,27 @@ def user_signup(request):
     # If the form is not valid, return the form and display errors
     context = {'form': form}
     return render(request, 'signup.html', context)
+
+
+# utility functions
+def resolve_role(request, user):
+    '''
+    utility function to determine role of logged in user.
+    stores current user role in session storage.
+    '''
+    pengguna = Pengguna.objects.get(user=user)
+    print(pengguna)
+    anggota = Anggota.objects.get(pengguna=pengguna)
+    print(anggota)
+    pengurus = Pengurus.objects.get(anggota=anggota)
+    print(pengurus)
+
+    if anggota is not None and pengurus is not None:
+        request.session['role'] = 'P'
+    elif anggota is not None:
+        request.session['role'] = 'A'
+    else:
+        request.session['role'] = 'undefined'
 
 
 
