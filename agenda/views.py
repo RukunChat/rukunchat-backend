@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 from .models import Kegiatan
 from .forms import KegiatanForm
 
+@login_required(login_url='/auth/login/')
 def index(request):
     listKegiatan = Kegiatan.objects.order_by("waktuKegiatan")[:5]
     context = {
@@ -12,6 +14,7 @@ def index(request):
     }
     return render(request, "agenda/index.html", context)
 
+@login_required(login_url='/auth/login/')
 def detail(request, kegiatan_id):
     kegiatan = Kegiatan.objects.get(id__exact=kegiatan_id)
     context = {
@@ -19,6 +22,7 @@ def detail(request, kegiatan_id):
     }
     return render(request, "agenda/detail.html", context)
 
+@login_required(login_url='/auth/login/')
 def add_kegiatan(request):
     if request.method == 'POST':
         form = KegiatanForm(request.POST)
