@@ -126,17 +126,16 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">
-                    <span>{{ item.namaKegiatan }}</span>
+                    <span><a href="{% url 'agenda:detail' item.id %}">{{ item.namaKegiatan }}</a></span>
+                    <span>{{ item.waktuKegiatan }}</span>
                 </h5>
                 <p class="card-subtitle mb-3 text-muted">
                     <span class="d-flex align-items-center">
 					<span class="ml-2">
-						Deskripsi: {{ item.deskripsiKegiatan }} <br>
-						Waktu Kegiatan: {{ item.waktuKegiatan }} <br>
+						{{ item.deskripsiKegiatan|truncatewords:10 }} <br>
 					</span>
                     </span>
                 </p>
-                <p class="card-text">{{ item.deskripsi|truncatewords:150 }}{% if item.deskripsi|length > 150 %}...{% endif %}</p>
             </div>
         </div>
     {% endfor %}
