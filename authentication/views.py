@@ -31,6 +31,8 @@ def user_login(request):
         if user is not None:
             login(request, user)
 
+            resolve_role(request, user)
+
             # TODO: redirect to landing page
             return render(request, 'landingPage.html')
         else:
@@ -82,12 +84,11 @@ def resolve_role(request, user):
     utility function to determine role of logged in user.
     stores current user role in session storage.
     '''
-    pengguna = Pengguna.objects.get(user=user)
-    print(pengguna)
-    anggota = Anggota.objects.get(pengguna=pengguna)
-    print(anggota)
-    pengurus = Pengurus.objects.get(anggota=anggota)
-    print(pengurus)
+    pengguna = get_or_none(Pengguna, user=user)
+
+    anggota = get_or_none(Anggota, pengguna=pengguna)
+    
+    pengurus = get_or_none(Pengurus, anggota=anggota)
 
     if anggota is not None and pengurus is not None:
         request.session['role'] = 'P'
@@ -95,6 +96,17 @@ def resolve_role(request, user):
         request.session['role'] = 'A'
     else:
         request.session['role'] = 'undefined'
+
+
+def get_or_none(model, **kwargs):
+    '''
+    returns query set of model if found,
+    else returns none
+    '''
+    try:
+        return model.objects.get(**kwargs)
+    except model.DoesNotExist:
+        return None
 
 
 
