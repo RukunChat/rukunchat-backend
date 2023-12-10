@@ -3,15 +3,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Layanan</title>
-    {% block additional_styles %}
+	<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Unauthorized</title>
+
+	{% block additional_styles %}
     <style>
-        .title {
-			text-align: center;
-		}
         /* Add your additional styles for the landing page here */
 		.card {
 			border: 1px solid #ddd;
@@ -114,21 +112,16 @@
 			border-radius: 10px;
 		}
     </style>
-    {% endblock %}
+	{% endblock %}
 </head>
 
 {% block content %}
 <body>
-    <h1 class="title">Tambah Layanan</h1>
-    <form method="POST" action="/layanan/add/">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-secondary">Save</button>
-    </form>
-    <a href="/layanan/all/">
-        <button class="save btn btn-secondary">Back</button>
+    <h1 class="mb-4">Unauthorized</h1>
+    <h3>Silahkan tunggu verifikasi profil Anda dari admin untuk mengakses halaman ini.</h3>
+    <a href="/">
+        <button>Kembali</button>
     </a>
 </body>
 {% endblock content %}
-
 </html>
