@@ -9,7 +9,7 @@ def show_all_forum(request):
     context = {
         'forums': forums
     }
-    return render(request, 'forum/show_all_forum.html', context)
+    return render(request, 'show_all_forum.html', context)
 
 @login_required(login_url='/auth/login/')
 def add_forum(request):
@@ -17,7 +17,7 @@ def add_forum(request):
         form = ForumForm(request.POST)
         if form.is_valid():
             forum = form.save(commit=False)
-            forum.creator = request.user  # Set the forum creator as the currently logged-in user
+            forum.creator = request.user
             forum.save()
             return redirect('forum:show_all_forum')
     else:
@@ -26,4 +26,4 @@ def add_forum(request):
     context = {
         'form': form
     }
-    return render(request, 'forum/add_forum.html', context)
+    return render(request, 'add_forum.html', context)

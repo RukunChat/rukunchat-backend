@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'administration',
     'authentication',
     'layanan',
+    'forum',
 ]
 
 MIDDLEWARE = [

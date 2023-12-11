@@ -26,6 +26,7 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('layanan/', include('layanan.urls')),
     path('administration/', include('administration.urls')),
+    path('forum/', include('forum.urls')),
 ]
 
 if settings.DEBUG:
