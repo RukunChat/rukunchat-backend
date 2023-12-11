@@ -1,14 +1,7 @@
-<form action="{% url 'agenda:add' %}" method="post">
-    {% csrf_token %}
-    <fieldset>
-        <legend>Informasi Kegiatan:</legend>
-        <label for="name">Nama kegiatan:</label>
-        <input type="text" id="name" name="name" required><br><br>
-        <label for="desc">Deskripsi Kegiatan:</label>
-        <textarea id="desc" name="desc" rows="4" cols="50" 
-        placeholder="Masukkan deskripsi kegiatan anda di sini"></textarea><br><br>
-        <label for="waktu">Waktu Kegiatan:</label>
-        <input type="datetime-local" id="waktu" name="waktu" required><br><br>
-    </fieldset>
-    <input type="submit" value="ADD">
+<h1>Tambahkan Kegiatan Baru</h1>
+
+<form action="" method="post" novalidate>
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Submit">
 </form>
