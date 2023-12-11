@@ -1,12 +1,10 @@
-<!-- base.html -->
-
 <!DOCTYPE html>
 <html lang="en">
+    {% load static %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Rukun Chat{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="/static/images/logo.jpg">
     <!-- Add Bootstrap CSS link or other stylesheets for styling -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
@@ -17,14 +15,12 @@
             font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
 
         }
+
+
         .navbar {
         height: 70px; /* Increased height */
         background-color: #ffffff; /* Lighter color */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-        }
-
-        .navbar-collapse {
-        background-color: #ffffff; /* Lighter color */
         }
 
         .navbar-brand {
@@ -34,18 +30,16 @@
         }
 
         .navbar-logo {
-            max-height: 50px; /* Set the maximum height of the logo */
-            max-width: 100%; /* Make the logo responsive */
-            margin-right: 10px; /* Adjust margin for spacing */
+        height: 30px; /* Set the height of the logo */
+        margin-right: 10px; /* Adjust margin for spacing */
         }
 
         {% block additional_styles %}{% endblock %}
     </style>
 </head>
-<body>
 
-    {% load static %}
-    <!-- Navbar -->
+<body>
+    <!-- Navar Start -->
     <nav class="navbar navbar-expand-lg navbar-light  fixed-top">
         <a class="navbar-brand" href="{% url 'authentication:index' %}">
             <img src="{% static 'images/logo.jpg' %}" alt="Rukun Chat Logo" class="navbar-logo">
@@ -91,5 +85,75 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- navbar end -->
+    <main class="p-3">
+        {% if not gallery %}
+        <div class="mt-5">
+            <h4 class="text-center pt-5">
+                You have no Photos, Please Add your Pictures
+            </h4>
+        </div>
+        {% endif%}
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-header">Albums</div>
+                        <ul class="list-group list-group-flush ">
+                            <li class="list-group-item active">
+                                <a href="{% url 'album:mygallery' %}" class="text-decoration-none text-light " id="allalbum">All</a>
+                            </li>
+                            {% for cat in album %} {% if cat.cat%}
+                            <li class="list-group-item">
+                                <a href="/album?album={{cat.cat}}"  class="text-decoration-none album">
+                                    {{cat.cat}}</a>
+                            </li>
+                            {% endif%} {% endfor %}
+                            <a href="{% url 'album:makegallery' %}" class="btn btn-dark m-1 btn-sm">Add Photo</a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="row">
+                        {% for data in gallery%}
+                        <div class="col-md-4 my-2">
+                            <div class="card h-100">
+                                <img src="{{ data.image.url }}" class="image-thumbnail img-fluid" alt="...">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <small>Album: {{ data.album.cat }}</small>
+                                    <div class="mt-auto">
+                                        <small><a class="btn btn-danger btn-sm" href="/album/delete-image?id={{ data.id }}">Delete</a></small>
+                                        <a href="view-photo?id={{ data.id }}" class="btn btn-outline-dark btn-sm m-1">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor%}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script>
+        
+        const album=document.querySelectorAll('.album');
+        const allalbum=document.getElementById('allalbum')
+        onload=function getParameter(){
+            let test=window.location.search
+            s=test.split('=')
+            album.forEach(x=>{
+                if(x.innerText==s[1]){
+                    x.parentElement.classList.add('active')
+                    x.classList.add('text-light')
+                    allalbum.classList.remove('text-light')
+                    allalbum.parentElement.classList.remove('active')
+                }
+            })
+        }
+    </script>
 </body>
+
 </html>
