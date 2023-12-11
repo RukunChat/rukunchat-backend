@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'authentication',
     'layanan',
     'album',
+    'agenda.apps.AgendaConfig',
 ]
 
 MIDDLEWARE = [
