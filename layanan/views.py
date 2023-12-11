@@ -32,7 +32,7 @@ def show_all_layanan(request):
                     layanan = layanan.filter(Q(end_date__gte=today))
 
             context = {
-                'local': f'RW {rw.nomor}, {rw.kecamatan}, {rw.kabupaten}.',
+                'rw': rw,
                 'role': role,
                 'layanan': layanan
             }

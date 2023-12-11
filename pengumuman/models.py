@@ -19,6 +19,8 @@ class Pengumuman(models.Model):
     topic = models.CharField(max_length=20, choices=TOPIC_CHOICES)
     text = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
+    image = models.ImageField(upload_to='media/images/', null=True, blank=True)
+    attachment = models.FileField(upload_to='media/attachments/', null=True, blank=True)
 
     def __str__(self):
         return self.title

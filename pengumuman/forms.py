@@ -4,4 +4,4 @@ from .models import Pengumuman
 class PengumumanForm(forms.ModelForm):
     class Meta:
         model = Pengumuman
-        fields = ['title', 'topic', 'text']
+        fields = ['title', 'topic', 'text', 'image', 'attachment']

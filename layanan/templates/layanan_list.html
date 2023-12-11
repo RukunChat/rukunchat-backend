@@ -119,8 +119,20 @@
 <body>
     <h1 class="mb-4">Layanan Warga</h1>
 
-	<div>
-		<p>Showing layanan for <span>{{ local }}</span></p>
+	<div class="d-flex align-items-center mt-2">
+		<!-- Add the following lines for kecamatan, kabupaten, and provinsi -->
+		<span class="mr-2">
+			<p class="card-subtitle mb-3 text-muted">RW: {{ rw.nomor }},</p>
+		</span>
+		<span class="mr-2">
+			<p class="card-subtitle mb-3 text-muted">Kecamatan: {{ rw.kecamatan }},</p>
+		</span>
+		<span class="mr-2">
+			<p class="card-subtitle mb-3 text-muted">Kabupaten: {{ rw.kabupaten }},</p>
+		</span>
+		<span>
+			<p class="card-subtitle mb-3 text-muted">Provinsi: {{ rw.provinsi }}</p>
+		</span>
 	</div>
 
 
