@@ -27,6 +27,7 @@ urlpatterns = [
     path('auth/', include('authentication.urls')),
     path('layanan/', include('layanan.urls')),
     path('administration/', include('administration.urls')),
+    path('album/', include('album.urls')),
 ]
 
 if settings.DEBUG:

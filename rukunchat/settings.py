@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-*^$qo98ha9o)xfk^o$7s5uz+3iobcvlsdyw(c4(fn!g-eg$)nn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://rukunchat-backend-production.up.railway.app', 
+    'http://*.127.0.0.1',
+]
 
 
 # Application definition
@@ -42,6 +46,7 @@ INSTALLED_APPS = [
     'administration',
     'authentication',
     'layanan',
+    'album',
     'agenda.apps.AgendaConfig',
 ]
 
@@ -53,6 +58,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'rukunchat.urls'
