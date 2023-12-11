@@ -58,7 +58,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-top: 20px;
-        max-width: 1600px; /* Set your desired maximum width */
+        max-width: 90%; /* Set your desired maximum width */
         margin-left: auto;
         margin-right: auto;
     }
@@ -105,6 +105,23 @@
 {% load static %}
 
     <h1 class="mb-4">Pengumuman Warga</h1>
+
+    <a href="{% url 'pengumuman:pengumuman_list' %}">
+        <span class="btn btn-secondary">&#8592; Back</span>
+    </a>
+
+    <div class="d-flex align-items-center mt-2">
+        <!-- Add the following lines for kecamatan, kabupaten, and provinsi -->
+        <span class="mr-2">
+            <p class="card-subtitle mb-3 text-muted">Kecamatan: {{ anggota.RT.RW.kecamatan }},</p>
+        </span>
+        <span class="mr-2">
+            <p class="card-subtitle mb-3 text-muted">Kabupaten: {{ anggota.RT.RW.kabupaten }},</p>
+        </span>
+        <span>
+            <p class="card-subtitle mb-3 text-muted">Provinsi: {{ anggota.RT.RW.provinsi }}</p>
+        </span>
+    </div>
 
     <div class="card mb-4">
         <div class="card-body">
