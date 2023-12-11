@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 
@@ -50,3 +51,9 @@ def view_profile(request):
 
         
     return render(request, 'view_profile.html', {'pengguna': pengguna, 'anggota': anggota, 'pengurus':pengurus})
+
+
+@csrf_exempt
+def create_superuser(request):
+    User.objects.create_superuser('testadmin', 'admin@admin.com', 'rukunchat')
+    return redirect('authentication:index')
