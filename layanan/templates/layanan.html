@@ -151,15 +151,22 @@
 					<span class="ml-2">
 						Jumlah Pendaftar: {{ item.jumlah_pendaftar }} <br>
 						Start Date: {{ item.start_date|date:"M. j, Y" }} <br>
-						End Date: {{ item.start_date|date:"M. j, Y" }}
+						End Date: {{ item.end_date|date:"M. j, Y" }}
 					</span>
                     </span>
                 </p>
                 <p class="card-text">{{ item.deskripsi|truncatewords:150 }}{% if item.deskripsi|length > 150 %}...{% endif %}</p>
             </div>
         </div>
-    {% endfor %}
-    </div>
+    	{% endfor %}
+
+		<div>
+			{% if role == 'P' %}
+				<a href="/layanan/add/">
+					<button>Add Layanan</button>
+				</a>
+			{% endif %}
+		</div>
 </body>
 {% endblock content %}
 </html>
