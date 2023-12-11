@@ -28,8 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
-    'https://rukunchat.adaptable.app', 
-    'https://*.127.0.0.1',
+    'https://rukunchat-backend-production.up.railway.app', 
+    'http://*.127.0.0.1',
 ]
 
 
