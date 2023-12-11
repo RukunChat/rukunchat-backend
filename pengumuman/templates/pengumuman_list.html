@@ -68,7 +68,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-top: 20px;
-        max-width: 1600px; /* Set your desired maximum width */
+        max-width: 90%; /* Set your desired maximum width */
         margin-left: auto;
         margin-right: auto;
     }
@@ -164,6 +164,19 @@
 
         <h1 class="mb-4">Pengumuman Warga</h1>
 
+        <div class="d-flex align-items-center mt-2">
+            <!-- Add the following lines for kecamatan, kabupaten, and provinsi -->
+            <span class="mr-2">
+                <p class="card-subtitle mb-3 text-muted">Kecamatan: {{ anggota.RT.RW.kecamatan }},</p>
+            </span>
+            <span class="mr-2">
+                <p class="card-subtitle mb-3 text-muted">Kabupaten: {{ anggota.RT.RW.kabupaten }},</p>
+            </span>
+            <span>
+                <p class="card-subtitle mb-3 text-muted">Provinsi: {{ anggota.RT.RW.provinsi }}</p>
+            </span>
+        </div>
+
         <!-- Button to trigger modal -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPengumumanModal">
             Add New Pengumuman
@@ -245,17 +258,15 @@
                 <p class="card-text">{{ pengumuman.text|truncatechars:150 }}{% if pengumuman.text|length > 150 %}...{% endif %}</p>
 
 
-                {% if pengumuman.attachment or pengumuman.image %}
+                {% if pengumuman.attachment %}
+                    <p class="card-text">Attachment available: <a href="{{ pengumuman.attachment.url }}" download="{{ pengumuman.attachment.name }}" class="attachment-link">{{ pengumuman.attachment.name }}</a></p>
+                {% endif %}
+
+                {% if pengumuman.image %}
                     <div class="card-text d-flex justify-content-between align-items-center">
-                        {% if pengumuman.attachment %}
-                            <span>Attachment available: <a href="{{ pengumuman.attachment.url }}" download="{{ pengumuman.attachment.name }}" class="attachment-link">{{ pengumuman.attachment.name }}</a></span>
-                        {% else %}
-                            <span></span>
-                        {% endif %}
+                        <span></span>
                         
-                        {% if pengumuman.image %}
-                            <span class="ml-3 text-muted">Image attached</span>
-                        {% endif %}
+                        <span class="ml-3 text-muted">Image attached</span>
                     </div>
                 {% endif %}
 
