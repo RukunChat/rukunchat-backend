@@ -1,6 +1,7 @@
 from urllib import request
 from django.shortcuts import render
 from django.http import HttpResponse,HttpResponseRedirect
+from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
 from album.models import *
 from django.contrib.auth.decorators import login_required
@@ -25,23 +26,30 @@ def makegallery(request):
     return res
     
 def saveGallery(request):
-    url=''
-    gallery=Gallery()
-    album=Album()
-    gallery.title=request.POST['title']
-    if  request.POST['album'] != 'default':
-        album=get_object_or_404(Album, cat=request.POST['album'])
-    else:
-        gallery.album=request.POST['newalbum']
-        album.cat=request.POST['newalbum']
-        album.user=request.POST['userid']
-    gallery.image=request.FILES['myimage']
-    gallery.user=request.POST['userid']
+    url = ''
+    gallery = Gallery()
+    album = Album()
 
-    gallery.album=album
+    gallery.title = request.POST['title']
+
+    if request.POST['album'] != 'default':
+        # Existing album selected
+        album_instance = Album.objects.get(cat=request.POST['album'])
+    else:
+        # New album entered
+        album_cat = request.POST['newalbum']
+        album_instance, created = Album.objects.get_or_create(cat=album_cat)
+
+    gallery.album = album_instance
+    gallery.image = request.FILES['myimage']
+    gallery.user = request.POST['userid']
+
+    # Save Album and Gallery instances
+    album_instance.save()
     gallery.save()
-    url='http://localhost:8000/album'
-    return HttpResponseRedirect(url)
+
+    return redirect('album:mygallery')
+
 def viewPhoto(request):
     photo=Gallery.objects.get(id=request.GET['id'])
     res=render(request,'photo.html',{'photo':photo})
@@ -49,4 +57,4 @@ def viewPhoto(request):
 def deleteImage(request):
     g=Gallery.objects.get(id=request.GET['id'])
     g.delete()    
-    return HttpResponseRedirect('http://localhost:8000/album')
+    return redirect('album:mygallery')
