@@ -1,11 +1,13 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 from administration.models import Anggota, Pengurus
 from authentication.models import Pengguna
 
 from .models import Pengumuman
 from .forms import PengumumanForm
 
+@csrf_exempt
 def pengumuman_list(request):
     if not request.user.is_authenticated:
         return render(request, 'unauthenticated_access.html')
@@ -48,6 +50,8 @@ def pengumuman_list(request):
 
     return render(request, 'pengumuman_list.html', {'pengumumans': pengumumans, 'form': form, 'topic': topic, 'anggota': anggota, 'role': request.session['role'], 'rt_filter': rt_filter})
 
+
+@csrf_exempt
 def pengumuman_detail(request, id):
     if not request.user.is_authenticated:
         return render(request, 'unauthenticated_access.html')

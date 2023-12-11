@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 from authentication.models import Pengguna
 from .forms import PenggunaUpdateForm, AnggotaForm, PengurusForm
 from .models import Anggota, Pengurus
 
 # Create your views here.
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def update_profile(request):
     try:
@@ -25,6 +29,8 @@ def update_profile(request):
 
     return render(request, 'update_profile.html', {'pengguna_form': pengguna_form})
 
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def view_profile(request):
     try:
