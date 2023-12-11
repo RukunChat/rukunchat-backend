@@ -58,6 +58,9 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 20px;
         margin-top: 20px;
+        max-width: 1600px; /* Set your desired maximum width */
+        margin-left: auto;
+        margin-right: auto;
     }
 
     .btn-primary {
@@ -95,6 +98,7 @@
 {% endblock %}
 
 {% block content %}
+{% load static %}
 
     <h1 class="mb-4">Pengumuman Warga</h1>
 
@@ -102,24 +106,45 @@
         <div class="card-body">
             <h5 class="card-title">
                 <span>{{ pengumuman.title }}</span>
-                <span class="topic">{{ pengumuman.topic }}</span>
+                <span class="topic">
+                    {{ pengumuman.topic }}
+                    <div class="d-flex align-items-center mt-2">
+                        <span class="mr-2">
+                            RT {{ pengumuman.anggota.RT.nomor }}
+                        </span>
+                        <span>
+                            / RW {{ pengumuman.anggota.RT.RW.nomor }}
+                        </span>
+                    </div>
+                </span>
             </h5>
             <p class="card-subtitle mb-3 text-muted">
                 <span class="d-flex align-items-center">
-                    <img src="{{ pengumuman.user.foto.url }}" alt="{{ pengumuman.user.nama_lengkap }}'s Photo" class="card-img creator-photo">
+                    {% if pengumuman.anggota.pengguna.foto %}
+                        <img src="{{ pengumuman.anggota.pengguna.foto.url }}" alt="{{ pengumuman.anggota.pengguna.nama_lengkap }}'s Photo" class="card-img creator-photo">
+                    {% else %}
+                        <img src="{% static 'images/profpic.jpg' %}" alt="Default User Photo" class="card-img creator-photo">
+                    {% endif %}
                     <span class="ml-2">
-                        Creator: {{ pengumuman.user.nama_lengkap }} <br>
+                        Creator: {{ pengumuman.anggota.pengguna.nama_lengkap }} <br>
                         Date Created: {{ pengumuman.date_created|date:"M. j, Y, g:i a" }}
                     </span>
                 </span>
             </p>
             <p class="card-text">{{ pengumuman.text }}</p>
 
-            {% if pengumuman.user.user == request.user %}
+            {% if pengurus %}
                 <div class="delete-edit-buttons">
                     <a href="#" class="btn btn-danger">Delete</a>
                     <a href="#" class="btn btn-primary">Edit</a>
                 </div>
+            {% else %}
+                {% if pengumuman.anggota.pengguna.user == request.user %}
+                    <div class="delete-edit-buttons">
+                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="#" class="btn btn-primary">Edit</a>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>

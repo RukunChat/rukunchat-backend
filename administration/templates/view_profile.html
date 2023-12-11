@@ -3,11 +3,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-md-6 offset-md-3">
             <h2>Profile Information</h2>
-            <img src="{{ pengguna.foto.url }}" alt="{{ pengguna.nama_lengkap }}" class="img-fluid mb-3">
+            {% if pengguna.foto %}
+            <img src="{{ pengguna.foto.url }}" alt="{{ pengguna.nama_lengkap }}'s Photo" class="img-fluid mb-3">
+            {% else %}
+                <img src="{% static 'images/profpic.jpg' %}" alt="Default User Photo" class="img-fluid mb-3">
+            {% endif %}
             <p><strong>Nama Lengkap:</strong> {{ pengguna.nama_lengkap }}</p>
             <p><strong>Tanggal Lahir:</strong> {{ pengguna.tanggal_lahir }}</p>
             <p><strong>Alamat:</strong> {{ pengguna.alamat }}</p>
@@ -16,6 +21,27 @@
             <!-- Add other profile fields as needed -->
 
             <a href="{% url 'administration:update_profile' %}" class="btn btn-primary">Update Profile</a>
+
+            {% if pengurus %}
+                <h3 class="mt-4">Pengurus Information</h3>
+                <p><strong>Jabatan:</strong> {{ pengurus.jabatan }}</p>
+                <p><strong>RT:</strong> {{ anggota.RT.nomor }}</p>
+                <p><strong>RW:</strong> {{ anggota.RT.RW.nomor }}</p>
+                <p><strong>Kecamatan:</strong> {{ anggota.RT.RW.kecamatan }}</p>
+                <p><strong>Kabupaten:</strong> {{ anggota.RT.RW.kabupaten }}</p>
+                <p><strong>Provinsi:</strong> {{ anggota.RT.RW.provinsi }}</p>
+            {% else %}
+                {% if anggota %}
+                    <h3 class="mt-4">Anggota Information</h3>
+                    <p><strong>RT:</strong> {{ anggota.RT.nomor }}</p>
+                    <p><strong>RW:</strong> {{ anggota.RT.RW.nomor }}</p>
+                    <p><strong>Kecamatan:</strong> {{ anggota.RT.RW.kecamatan }}</p>
+                    <p><strong>Kabupaten:</strong> {{ anggota.RT.RW.kabupaten }}</p>
+                    <p><strong>Provinsi:</strong> {{ anggota.RT.RW.provinsi }}</p>
+                {% else %}
+                    <p class="mt-4">Please wait to be assigned to RT/RW. The admin should register you.</p>
+                {% endif %}
+            {% endif %}
 
         </div>
     </div>
