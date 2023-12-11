@@ -1,7 +1,7 @@
 <!-- pengumuman_detail.html -->
 {% extends 'base.html' %}
 
-{% block title %}Pengumuman Detail{% endblock %}
+{% block title %}Rukun Chat | Detail Kegiatan{% endblock %}
 
 {% block additional_styles %}
     <style>
@@ -106,8 +106,9 @@
         <div class="card-body">
             <h5 class="card-title">
                 <span>{{ kegiatan.namaKegiatan }}</span>
+                <span>{{ kegiatan.waktuKegiatan }}</span>
             </h5>
-            <p class="card-text">{{ kegiatan.deskripsiKegiatan }}</p>
+            <p class="card-text">{{ kegiatan.deskripsiKegiatan | linebreaks}}</p>
 
             {% if pengurus %}
                 <div class="delete-edit-buttons">
@@ -117,4 +118,8 @@
             {% endif %}
         </div>
     </div>
+
+    <a href="{% url 'agenda:index' %}">
+        <button class="save btn btn-secondary">Back</button>
+    </a>
 {% endblock %}

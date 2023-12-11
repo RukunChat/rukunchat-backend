@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
-
+{% block title %}Rukun Chat | Agenda{% endblock %}
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Layanan</title>
+	<title>Rukun Chat | Agenda</title>
 
 	{% block additional_styles %}
     <style>
@@ -118,7 +118,7 @@
 {% block content %}
 <body>
     <h1 class="mb-4">Agenda</h1>
-	{% if pengurus %}
+	{% if role == "P" %}
 	<a href="{% url 'agenda:add_kegiatan' %}">
 		<button type="button" class="btn btn-primary", style="margin-bottom: 20px;">
 			Tambahkan kegiatan
@@ -135,7 +135,7 @@
                         {{ item.waktuKegiatan }}
                     </span>
                 </h5>
-                <p class="card-text">{{ item.deskripsiKegiatan|truncatechars:150 }}{% if item.deskripsiKegiatan|length > 150 %}...{% endif %}</p>
+                <p class="card-text">{{ item.deskripsiKegiatan|truncatechars:80|linebreaks }}{% if item.deskripsiKegiatan|length > 150 %}...{% endif %}</p>
 
                 <a href="{% url 'agenda:detail' item.id %}" class="read-more">Read full</a>
 			</div>
