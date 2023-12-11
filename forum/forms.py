@@ -1,10 +1,12 @@
 from django import forms
-from .models import Forum
+from .models import Forum, ForumResponse
 
 class ForumForm(forms.ModelForm):
     class Meta:
         model = Forum
         fields = ('title', 'topic')
-        widgets = {
-            'date_created': forms.DateInput(attrs={'type': 'date'}),
-        }
+
+class ForumResponseForm(forms.ModelForm):
+    class Meta:
+        model = ForumResponse
+        fields = ('response_text',)

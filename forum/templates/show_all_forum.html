@@ -15,9 +15,9 @@
   <p>Dibuat oleh: {{ forum.creator.username }}</p>
   <p>Tanggal Dibuat: {{ forum.date_created }}</p>
 
-  <!-- Hanya tampilkan tombol reply untuk anggota biasa -->
   {% if user.is_authenticated and not user.is_staff %}
   <a href="{% url 'forum:reply_forum' forum.id %}">Reply</a>
+  <a href="{% url 'forum:forum_detail' forum.id %}">Detail</a>
   {% endif %}
 </div>
 {% endfor %}
