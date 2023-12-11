@@ -118,26 +118,26 @@
 {% block content %}
 <body>
     <h1 class="mb-4">Agenda</h1>
+	{% if pengurus %}
     <button type="button">
         <a href="{% url 'agenda:add_kegiatan' %}"> Tambahkan kegiatan </a>
     </button>
+	{% endif %}
 
         {% for item in listKegiatan %}
-        <div class="card mb-4">
+		<div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title">
-                    <span><a href="{% url 'agenda:detail' item.id %}">{{ item.namaKegiatan }}</a></span>
-                    <span>{{ item.waktuKegiatan }}</span>
-                </h5>
-                <p class="card-subtitle mb-3 text-muted">
-                    <span class="d-flex align-items-center">
-					<span class="ml-2">
-						{{ item.deskripsiKegiatan|truncatewords:10 }} <br>
-					</span>
+                    <span>{{ item.namaKegiatan|truncatechars:30 }}</span>
+                    <span class="waktu">
+                        {{ item.waktuKegiatan }}
                     </span>
-                </p>
-            </div>
-        </div>
+                </h5>
+                <p class="card-text">{{ item.deskripsiKegiatan|truncatechars:150 }}{% if item.deskripsiKegiatan|length > 150 %}...{% endif %}</p>
+
+                <a href="{% url 'agenda:detail' item.id %}" class="read-more">Read full</a>
+			</div>
+		</div>
     {% endfor %}
     </div>
 </body>
