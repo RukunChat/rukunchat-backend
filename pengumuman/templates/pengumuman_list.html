@@ -141,10 +141,18 @@
         font-size: 1.5rem; /* Larger font size */
     }
 
+    .attachment-link {
+        color: #e74c3c; /* Set your desired color for attachment links */
+    }
+
     /* Responsive Styles */
     @media (max-width: 768px) {
         .modal-dialog {
             max-width: 95%; /* Slightly larger on smaller screens */
+        }
+
+        .modal-content {
+            max-width: 100%; /* Adjust the width for smaller screens */
         }
     }
     </style>
@@ -236,15 +244,30 @@
                 </p>
                 <p class="card-text">{{ pengumuman.text|truncatechars:150 }}{% if pengumuman.text|length > 150 %}...{% endif %}</p>
 
+
+                {% if pengumuman.attachment or pengumuman.image %}
+                    <div class="card-text d-flex justify-content-between align-items-center">
+                        {% if pengumuman.attachment %}
+                            <span>Attachment available: <a href="{{ pengumuman.attachment.url }}" download="{{ pengumuman.attachment.name }}" class="attachment-link">{{ pengumuman.attachment.name }}</a></span>
+                        {% else %}
+                            <span></span>
+                        {% endif %}
+                        
+                        {% if pengumuman.image %}
+                            <span class="ml-3 text-muted">Image attached</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
                 <a href="{% url 'pengumuman:pengumuman_detail' id=pengumuman.id %}" class="read-more">Read full</a>
 
-                {% if pengurus %}
+                {% if role == 'P' %}
                     <div class="delete-edit-buttons">
                         <a href="#" class="btn btn-danger">Delete</a>
                         <a href="#" class="btn btn-primary">Edit</a>
                     </div>
                 {% else %}
-                    {% if pengumuman.anggota.pengguna.user == request.user %}
+                    {% if pengumuman.anggota == anggota %}
                         <div class="delete-edit-buttons">
                             <a href="#" class="btn btn-danger">Delete</a>
                             <a href="#" class="btn btn-primary">Edit</a>
@@ -268,7 +291,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="post" action="{% url 'pengumuman:pengumuman_list' %}">
+                    <form method="post" action="{% url 'pengumuman:pengumuman_list' %}" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <button type="submit" class="btn btn-primary">Submit</button>
