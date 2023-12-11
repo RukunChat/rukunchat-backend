@@ -6,7 +6,7 @@
 	<head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Unauthorized</title>
+	<title>Layanan</title>
 
 	{% block additional_styles %}
     <style>
@@ -117,11 +117,61 @@
 
 {% block content %}
 <body>
-    <h1 class="mb-4">Unauthorized</h1>
-    <h3>Silahkan tunggu verifikasi profil Anda dari admin untuk mengakses halaman ini.</h3>
-    <a href="/">
-        <button>Kembali</button>
-    </a>
+    <h1 class="mb-4">Layanan Warga</h1>
+
+	<div>
+		<p>Showing layanan for <span>{{ local }}</span></p>
+	</div>
+
+
+        <div class="d-flex mt-3 mb-3">
+            <form method="get" action="{% url 'layanan:show_all_layanan' %}" class="mr-2 flex-grow-1">
+                <div class="input-group">
+                    <input type="text" name="q" placeholder="Search..." class="form-control search-bar" value="{{ request.GET.q }}">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-secondary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Filter buttons -->
+        <div class="btn-group mb-3">
+			<form method='get' action="{% url 'layanan:show_all_layanan' %}">
+				<label for="active">
+					<input type="checkbox" name="active" id="active" onchange="this.form.submit()" {% if request.GET.active %}checked{% endif %}>
+					Show active layanan
+				</label>
+			</form>
+        </div>
+
+        {% for item in layanan %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <span>{{ item.nama }}</span>
+                </h5>
+                <p class="card-subtitle mb-3 text-muted">
+                    <span class="d-flex align-items-center">
+					<span class="ml-2">
+						Jumlah Pendaftar: {{ item.jumlah_pendaftar }} <br>
+						Start Date: {{ item.start_date|date:"M. j, Y" }} <br>
+						End Date: {{ item.end_date|date:"M. j, Y" }}
+					</span>
+                    </span>
+                </p>
+                <p class="card-text">{{ item.deskripsi|truncatewords:150 }}{% if item.deskripsi|length > 150 %}...{% endif %}</p>
+            </div>
+        </div>
+    	{% endfor %}
+
+		<div>
+			{% if role == 'P' %}
+				<a href="/layanan/add/">
+					<button>Add Layanan</button>
+				</a>
+			{% endif %}
+		</div>
 </body>
 {% endblock content %}
 </html>

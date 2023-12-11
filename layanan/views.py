@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Layanan
 from .forms import LayananForm
 
+from administration.models import Pengguna, Anggota, RT, RW
+
 
 # Create your views here.
 @csrf_exempt
@@ -16,26 +18,29 @@ def show_all_layanan(request):
     active = request.GET.get('active')
     role = request.session['role']
 
-    layanan = Layanan.objects.all()
-
-    if len(layanan) > 0:
-        if query:
-            layanan = layanan.filter(Q(nama__icontains=query))
-        if active:
-            today = timezone.now().date()
-            layanan = layanan.filter(Q(end_date__gte=today))
-
     if request.method == 'GET':
         # user is validated
         if role == 'P' or role == 'A':
+            rw = resolve_rw(request)
+            layanan = Layanan.objects.filter(RW=rw)
+            
+            if len(layanan) > 0:
+                if query:
+                    layanan = layanan.filter(Q(nama__icontains=query))
+                if active:
+                    today = timezone.now().date()
+                    layanan = layanan.filter(Q(end_date__gte=today))
+
             context = {
+                'local': f'RW {rw.nomor}, {rw.kecamatan}, {rw.kabupaten}.',
                 'role': role,
                 'layanan': layanan
             }
-            return render(request, 'layanan.html', context)
+            return render(request, 'layanan_list.html', context)
+        
         else:
             # render unauthorized page, wait for verification from admin (assign rw & rt)
-            return render(request, 'unauthorized.html')
+            return render(request, 'layanan_unauthorized.html')
 
 
 @csrf_exempt
@@ -47,13 +52,28 @@ def add_layanan(request):
         context = {
             'form': form
         }
-        return render(request, 'add_layanan.html', context)
+        return render(request, 'layanan_add.html', context)
     
     elif request.method == 'POST':
-        layanan = LayananForm(request.POST)
-        if layanan.is_valid():
+        form = LayananForm(request.POST)
+        if form.is_valid():
+            layanan = form.save(commit=False)
+            print(layanan)
+            rw = resolve_rw(request)
+            layanan.RW = rw 
             layanan.save()
             return redirect('layanan:show_all_layanan')
+        
 
+def resolve_rw(request):
+    '''
+    returns current user's rw
+    '''
+    pengguna = Pengguna.objects.get(user=request.user)
+    anggota = Anggota.objects.get(pengguna=pengguna)
 
+    rt = anggota.RT
+    rw = rt.RW
+
+    return rw
 
