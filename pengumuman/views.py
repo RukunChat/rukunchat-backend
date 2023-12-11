@@ -13,17 +13,12 @@ def pengumuman_list(request):
     try:
         pengguna = Pengguna.objects.get(user=request.user)
     except Pengguna.DoesNotExist:
-        return render(request, 'unauthenticated_access.html')
+        return render(request, 'unauthorized_access.html', {'info': "You don't have access to this page because you are not part of this organization"})
 
     try:
         anggota = Anggota.objects.get(pengguna=pengguna)
     except Anggota.DoesNotExist:
         return render(request, 'unauthorized_access.html', {'info': "You don't have access to this page. Please wait for the admin to assign you to an RT/RW."})
-    
-    try:
-        pengurus = Pengurus.objects.get(anggota=anggota)
-    except Pengurus.DoesNotExist:
-        pengurus = None
 
 
     query = request.GET.get('q')
@@ -44,14 +39,14 @@ def pengumuman_list(request):
     form = PengumumanForm()
 
     if request.method == 'POST':
-        form = PengumumanForm(request.POST)
+        form = PengumumanForm(request.POST, request.FILES)  # Include request.FILES
         if form.is_valid():
             new_pengumuman = form.save(commit=False)
             new_pengumuman.anggota = anggota
             new_pengumuman.save()
             return redirect('pengumuman:pengumuman_list')
 
-    return render(request, 'pengumuman_list.html', {'pengumumans': pengumumans, 'form': form, 'topic': topic, 'anggota': anggota, 'pengurus': pengurus, 'rt_filter': rt_filter})
+    return render(request, 'pengumuman_list.html', {'pengumumans': pengumumans, 'form': form, 'topic': topic, 'anggota': anggota, 'role': request.session['role'], 'rt_filter': rt_filter})
 
 def pengumuman_detail(request, id):
     if not request.user.is_authenticated:
@@ -60,19 +55,14 @@ def pengumuman_detail(request, id):
     try:
         pengguna = Pengguna.objects.get(user=request.user)
     except Pengguna.DoesNotExist:
-        return render(request, 'unauthenticated_access.html')
+        return render(request, 'unauthorized_access.html', {'info': "You don't have access to this page. Please wait for the admin to assign you to an RT/RW."})
 
     try:
         anggota = Anggota.objects.get(pengguna=pengguna)
     except Anggota.DoesNotExist:
         return render(request, 'unauthorized_access.html', {'info': "You don't have access to this page. Please wait for the admin to assign you to an RT/RW."})
-    
-    try:
-        pengurus = Pengurus.objects.get(anggota=anggota)
-    except Pengurus.DoesNotExist:
-        pengurus = None
 
     pengumuman = get_object_or_404(Pengumuman, id=id)
     if pengumuman.anggota.RT.RW != anggota.RT.RW:
         return render(request, 'unauthorized_access.html', {'info': "You don't have access to this page because you are not part of this organization"})
-    return render(request, 'pengumuman_detail.html', {'pengumuman': pengumuman, 'pengurus': pengurus})
+    return render(request, 'pengumuman_detail.html', {'pengumuman': pengumuman, 'anggota': anggota, 'role': request.session['role']})
