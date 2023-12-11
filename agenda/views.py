@@ -65,7 +65,7 @@ def add_kegiatan(request):
             new_kegiatan = form.save(commit=False)
             new_kegiatan.pengurus = pengurus
             new_kegiatan.save()
-            return redirect("agenda:detail", new_kegiatan.id)
+            return redirect("agenda:index")
 
     else:
         form = KegiatanForm()
