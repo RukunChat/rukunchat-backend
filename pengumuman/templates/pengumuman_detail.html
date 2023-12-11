@@ -93,6 +93,10 @@
         border-color: #545b62;
     }
 
+    .attachment-link {
+        color: #e74c3c; /* Set your desired color for attachment links */
+    }
+
     </style>
 
 {% endblock %}
@@ -131,15 +135,24 @@
                     </span>
                 </span>
             </p>
+            {% if pengumuman.image %}
+                <div class="text-center mb-3">
+                    <img src="{{ pengumuman.image.url }}" alt="{{ pengumuman.title }}" class="img-fluid rounded">
+                </div>
+            {% endif %}
             <p class="card-text">{{ pengumuman.text }}</p>
 
-            {% if pengurus %}
+            {% if pengumuman.attachment %}
+                <p class="card-text">Attachment available: <a href="{{ pengumuman.attachment.url }}" download="{{ pengumuman.attachment.name }}" class="attachment-link">{{ pengumuman.attachment.name }}</a></p>
+            {% endif %}
+
+            {% if role == 'P' %}
                 <div class="delete-edit-buttons">
                     <a href="#" class="btn btn-danger">Delete</a>
                     <a href="#" class="btn btn-primary">Edit</a>
                 </div>
             {% else %}
-                {% if pengumuman.anggota.pengguna.user == request.user %}
+                {% if pengumuman.anggota == anggota %}
                     <div class="delete-edit-buttons">
                         <a href="#" class="btn btn-danger">Delete</a>
                         <a href="#" class="btn btn-primary">Edit</a>
