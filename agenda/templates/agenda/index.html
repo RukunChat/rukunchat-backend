@@ -105,11 +105,11 @@
 			border-color: #545b62;
 		}
 
-		.search-bar {
-			width: 100%;
-			padding: 8px;
-			border: 1px solid #ced4da;
-			border-radius: 10px;
+		/* Responsive Styles */
+		@media (max-width: 768px) {
+			.modal-dialog {
+				max-width: 95%; /* Slightly larger on smaller screens */
+			}
 		}
     </style>
 	{% endblock %}
@@ -119,9 +119,11 @@
 <body>
     <h1 class="mb-4">Agenda</h1>
 	{% if pengurus %}
-    <button type="button">
-        <a href="{% url 'agenda:add_kegiatan' %}"> Tambahkan kegiatan </a>
-    </button>
+	<a href="{% url 'agenda:add_kegiatan' %}">
+		<button type="button" class="btn btn-primary", style="margin-bottom: 20px;">
+			Tambahkan kegiatan
+		</button>
+	</a>
 	{% endif %}
 
         {% for item in listKegiatan %}
