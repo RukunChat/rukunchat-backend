@@ -1,7 +1,7 @@
 <!-- pengumuman_detail.html -->
 {% extends 'base.html' %}
 
-{% block title %}Pengumuman Detail{% endblock %}
+{% block title %}Rukun Chat | Detail Kegiatan{% endblock %}
 
 {% block additional_styles %}
     <style>
@@ -117,4 +117,8 @@
             {% endif %}
         </div>
     </div>
+
+    <a href="{% url 'agenda:index' %}">
+        <button class="save btn btn-secondary">Back</button>
+    </a>
 {% endblock %}
