@@ -3,6 +3,10 @@
 {% block content %}
 <h1>Tambah Forum</h1>
 
+{% if form.errors %}
+<p style="color: red;">Formulir tidak valid. Mohon cek kembali isian Anda.</p>
+{% endif %}
+
 <form method="post" action="{% url 'forum:add_forum' %}">
   {% csrf_token %}
   {{ form.as_p }}

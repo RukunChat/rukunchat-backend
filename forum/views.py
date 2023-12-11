@@ -42,7 +42,6 @@ def reply_forum(request, forum_id):
 
             forum.num_responses += 1
             forum.save()
-
             return redirect('forum:show_all_forum')
     else:
         form = ForumResponseForm()
