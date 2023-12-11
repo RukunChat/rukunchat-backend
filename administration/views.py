@@ -1,15 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 from authentication.models import Pengguna
 from .forms import PenggunaUpdateForm, AnggotaForm, PengurusForm
 from .models import Anggota, Pengurus
 
 # Create your views here.
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def update_profile(request):
-
-    pengguna = Pengguna.objects.get(user=request.user)
+    try:
+        pengguna = Pengguna.objects.get(user=request.user)
+    except Pengguna.DoesNotExist:
+        return render(request, 'unauthenticated_access.html')
     
 
     if request.method == 'POST':
@@ -23,9 +29,14 @@ def update_profile(request):
 
     return render(request, 'update_profile.html', {'pengguna_form': pengguna_form})
 
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def view_profile(request):
-    pengguna = Pengguna.objects.get(user=request.user)
+    try:
+        pengguna = Pengguna.objects.get(user=request.user)
+    except Pengguna.DoesNotExist:
+        return render(request, 'unauthenticated_access.html')
 
     try:
         anggota = Anggota.objects.get(pengguna=pengguna)
