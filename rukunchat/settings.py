@@ -27,6 +27,10 @@ SECRET_KEY = 'django-insecure-*^$qo98ha9o)xfk^o$7s5uz+3iobcvlsdyw(c4(fn!g-eg$)nn
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = [
+    'https://rukunchat.adaptable.app', 
+    'https://*.127.0.0.1',
+]
 
 
 # Application definition
