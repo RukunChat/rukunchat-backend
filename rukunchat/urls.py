@@ -28,6 +28,7 @@ urlpatterns = [
     path('layanan/', include('layanan.urls')),
     path('administration/', include('administration.urls')),
     path('album/', include('album.urls')),
+    path('forum/', include('forum.urls')),
 ]
 
 if settings.DEBUG:

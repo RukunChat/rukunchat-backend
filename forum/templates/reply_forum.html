@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Reply to Forum</h1>
+
+<p>Forum: {{ forum.title }}</p>
+
+<form method="post" action="{% url 'forum:reply_forum' forum.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Reply</button>
+</form>
+
+<a href="{% url 'forum:show_all_forum' %}">Back to Forums</a>
+{% endblock %}

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'layanan',
     'album',
     'agenda.apps.AgendaConfig',
+    'forum',
 ]
 
 MIDDLEWARE = [
