@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Rukun Chat{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/logo.jpg">
     <!-- Add Bootstrap CSS link or other stylesheets for styling -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap">
@@ -16,12 +17,14 @@
             font-family: 'Montserrat', sans-serif; /* Use Montserrat font */
 
         }
-
-
         .navbar {
         height: 70px; /* Increased height */
         background-color: #ffffff; /* Lighter color */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+
+        .navbar-collapse {
+        background-color: #ffffff; /* Lighter color */
         }
 
         .navbar-brand {
@@ -31,8 +34,9 @@
         }
 
         .navbar-logo {
-        height: 30px; /* Set the height of the logo */
-        margin-right: 10px; /* Adjust margin for spacing */
+            max-height: 50px; /* Set the maximum height of the logo */
+            max-width: 100%; /* Make the logo responsive */
+            margin-right: 10px; /* Adjust margin for spacing */
         }
 
         {% block additional_styles %}{% endblock %}
@@ -42,10 +46,9 @@
 
     {% load static %}
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-        <a class="navbar-brand" href="#">
-            <img src="https://w7.pngwing.com/pngs/278/613/png-transparent-crowd-drawing-cartoon-community-miscellaneous-audience-human-behavior-thumbnail.png" alt="Rukun Chat Logo" class="navbar-logo">
-            Rukun Chat
+    <nav class="navbar navbar-expand-lg navbar-light  fixed-top">
+        <a class="navbar-brand" href="{% url 'authentication:index' %}">
+            <img src="{% static 'images/logo.jpg' %}" alt="Rukun Chat Logo" class="navbar-logo">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -68,6 +71,12 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'layanan:show_all_layanan' %}">Layanan</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'album:mygallery' %}">Album</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'agenda:index' %}">Agenda</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'administration:view_profile' %}">Profile</a>

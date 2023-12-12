@@ -1,15 +1,22 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 from authentication.models import Pengguna
 from .forms import PenggunaUpdateForm, AnggotaForm, PengurusForm
 from .models import Anggota, Pengurus
 
 # Create your views here.
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def update_profile(request):
-
-    pengguna = Pengguna.objects.get(user=request.user)
+    try:
+        pengguna = Pengguna.objects.get(user=request.user)
+    except Pengguna.DoesNotExist:
+        return render(request, 'unauthenticated_access.html')
     
 
     if request.method == 'POST':
@@ -23,10 +30,30 @@ def update_profile(request):
 
     return render(request, 'update_profile.html', {'pengguna_form': pengguna_form})
 
+
+@csrf_exempt
 @login_required(login_url='/auth/login/')
 def view_profile(request):
-    pengguna = Pengguna.objects.get(user=request.user)
-    return render(request, 'view_profile.html', {'pengguna': pengguna})
+    try:
+        pengguna = Pengguna.objects.get(user=request.user)
+    except Pengguna.DoesNotExist:
+        return render(request, 'unauthenticated_access.html')
 
-# #            <a href="{% url 'register_anggota' %}" class="btn btn-success">Register as Anggota RT RW</a>
-#             <a href="{% url 'register_pengurus' %}" class="btn btn-warning">Register as Pengurus RT/RW</a>
+    try:
+        anggota = Anggota.objects.get(pengguna=pengguna)
+    except Anggota.DoesNotExist:
+        anggota = None
+
+    try:
+        pengurus = Pengurus.objects.get(anggota = anggota)
+    except Pengurus.DoesNotExist:
+        pengurus = None
+
+        
+    return render(request, 'view_profile.html', {'pengguna': pengguna, 'anggota': anggota, 'pengurus':pengurus})
+
+
+@csrf_exempt
+def create_superuser(request):
+    User.objects.create_superuser('testadmin', 'admin@admin.com', 'rukunchat')
+    return redirect('authentication:index')
